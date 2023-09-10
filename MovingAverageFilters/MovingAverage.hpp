@@ -35,14 +35,14 @@ public:
     [[nodiscard]] numerical filter(const numerical lastSignalData) {
         // One of the improvement would be to switch of model and not always re-assessing the condition when we reached the subset size
         if (std::size(subset) == subsetSize) {
-            mean = mean + (lastSignalData - subset.front()) / subsetSize;
+            smoothed = smoothed + (lastSignalData - subset.front()) / subsetSize;
             subset.pop_front();
         } else {
-            mean = (iteration * mean + lastSignalData) / (iteration + 1);
+            smoothed = (iteration * smoothed + lastSignalData) / (iteration + 1);
             ++iteration;
         }
         subset.emplace_back(lastSignalData);
-        return mean;
+        return smoothed;
     }
 
 
@@ -52,7 +52,7 @@ public:
     void clear() {
         subset.clear();
         iteration = 0u;
-        mean = 0.0;
+        smoothed = 0.0;
     }
 
     virtual ~MovingAverage() = default;
@@ -60,6 +60,6 @@ public:
 private:
     const std::size_t subsetSize{};
     std::deque<numerical> subset{};
-    numerical mean{numerical{}};
+    numerical smoothed{numerical{}};
     std::size_t iteration{0u};
 };

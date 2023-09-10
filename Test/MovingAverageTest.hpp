@@ -7,7 +7,7 @@
 #include <type_traits>
 #include <deque>
 #include <cmath>
-#include "../MovingAverage.hpp"
+#include "../MovingAverageFilters/MovingAverage.hpp"
 
 /**
  *

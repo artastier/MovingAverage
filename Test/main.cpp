@@ -1,7 +1,7 @@
 #include <iostream>
 #include "NoisySinusoid.hpp"
 #include "MovingAverageTest.hpp"
-#include "../gnuplot_i.hpp"
+#include "gnuplot_i.hpp"
 using numerical = double;
 using NoisySinusoidType = NoisySinusoid<numerical>;
 using MovingAverageTestType = MovingAverageTest<numerical>;
