@@ -1,5 +1,7 @@
-# Moving Average Filters
 
+# Moving Average and Exponential smoothing Filters
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+ ### [WIP] WARNING: Simple Moving Median, Simple Exponential Smoothing and Double Exponential smoothing not tested yet
 This repository regroups 4 moving average filters.
 These filters have been designed to perform an online smoothing of real-time data (Ex: Data from a sensor).
 All the following equations have been extracted from [Moving Average](https://en.wikipedia.org/wiki/Moving_average)
