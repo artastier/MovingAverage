@@ -15,14 +15,14 @@
  * @tparam numerical
  */
 template<typename numerical, typename =std::enable_if_t<std::is_floating_point_v<numerical>>>
-class MovingAverage {
+class SimpleMovingAverage {
 public:
     /**
      *
      * @param samplingFrequency
      * @param subsetDuration
      */
-    MovingAverage(const numerical samplingFrequency, const numerical subsetDuration) : subsetSize(
+    SimpleMovingAverage(const numerical samplingFrequency, const numerical subsetDuration) : subsetSize(
             std::floor(subsetDuration * samplingFrequency)) {
         // TODO: Add static assert if subset size is null
     };
@@ -55,7 +55,7 @@ public:
         smoothed = 0.0;
     }
 
-    virtual ~MovingAverage() = default;
+    virtual ~SimpleMovingAverage() = default;
 
 private:
     const std::size_t subsetSize{};

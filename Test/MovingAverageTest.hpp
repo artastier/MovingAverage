@@ -7,15 +7,15 @@
 #include <type_traits>
 #include <deque>
 #include <cmath>
-#include "../MovingAverageFilters/MovingAverage.hpp"
+#include "../MovingAverageFilters/SimpleMovingAverage.hpp"
 
 /**
  *
  * @tparam numerical
  */
 template<typename numerical, typename =std::enable_if_t<std::is_floating_point_v<numerical>>>
-class MovingAverageTest: public MovingAverage<numerical>{
-    using MovingAverageType = MovingAverage<numerical>;
+class MovingAverageTest: public SimpleMovingAverage<numerical>{
+    using MovingAverageType = SimpleMovingAverage<numerical>;
     using Trajectory = std::vector<std::pair<numerical, numerical>>;
 public:
     /**
