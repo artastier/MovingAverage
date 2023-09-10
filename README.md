@@ -125,7 +125,7 @@ Then, for each new item of data, we compute the smoothed value $s_{t}$ thanks to
 
 $s_{t} = \alpha.x_{t} + (1-\alpha).(s_{t-1}+b_{t-1})$
 
-$b_{t} = \beta.(s_{t}-s_{t-1}) + (1-\beta).b_{t-1}
+$b_{t} = \beta.(s_{t}-s_{t-1}) + (1-\beta).b_{t-1}$
 
 ### Results with $\alpha = 0.005$
 
