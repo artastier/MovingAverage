@@ -23,7 +23,6 @@ public:
      * @param aBeta
      */
     DoubleExponentialSmoothing(const numerical aAlpha, const numerical aBeta) : alpha(aAlpha), beta(aBeta) {
-        // TODO: Add static assert if subset size is null
         // TODO: Add static assert if alpha not in [0,1]
         // TODO: Add static assert if beta not in [0,1]
 

@@ -22,7 +22,6 @@ public:
      * @param aAlpha
      */
     SimpleExponentialSmoothing(const numerical aAlpha) : alpha(aAlpha) {
-        // TODO: Add static assert if subset size is null
         // TODO: Add static assert if alpha not in [0,1]
     };
 
