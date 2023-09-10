@@ -9,6 +9,7 @@ and [Exponential Smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing)
 
 ## Basic Moving Average
 
+
 ### Inputs
 
 * Sampling frequency (Hz)
