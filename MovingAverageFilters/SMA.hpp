@@ -11,7 +11,6 @@
 #include <cmath>
 #include <deque>
 #include <type_traits>
-#include <vector>
 
 namespace Smoother
 {

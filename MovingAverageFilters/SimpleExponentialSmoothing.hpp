@@ -7,7 +7,6 @@
 #include <type_traits>
 #include <deque>
 #include <cmath>
-#include <vector>
 #include <algorithm>
 #include "TemporalSmoother.hpp"
 
@@ -23,7 +22,7 @@ namespace Smoother {
          *
          * @param aAlpha
          */
-        SimpleExponentialSmoothing(const double aAlpha) : alpha(aAlpha) {
+        explicit SimpleExponentialSmoothing(const double aAlpha) : alpha(aAlpha) {
             // TODO: Add static assert if alpha not in [0,1]
         };
 

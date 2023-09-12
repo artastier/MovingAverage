@@ -1,14 +1,15 @@
-
 # Moving Average and Exponential smoothing Filters
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
- ### [WIP] WARNING: Simple Moving Median not tested yet
+
+### [WIP] WARNING: Simple Moving Median not tested yet
+
 This repository regroups 4 moving average filters.
 These filters have been designed to perform an online smoothing of real-time data (Ex: Data from a sensor).
 All the following equations have been extracted from [Moving Average](https://en.wikipedia.org/wiki/Moving_average)
 and [Exponential Smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing).
 
 ## Basic Moving Average
-
 
 ### Inputs
 
@@ -34,10 +35,6 @@ Once the subset has the required size, we perform the simple moving average usin
 
 $m_{n} = m_{n-1} + \frac{x_{n} - x_{n-1-L}}{L}$ where $L$ represents the subset size.
 
-#### Results for a $0.05s$ window
-
-INSERT IMAGE
-
 ## Simple Moving Median
 
 ### Inputs
@@ -62,10 +59,6 @@ average.
 #### Simple Moving median
 
 Once the subset has the required size, we compute its median and make it "slide".
-
-#### Results for a $0.05s$ window
-
-INSERT IMAGE
 
 ### Remark
 
@@ -101,10 +94,6 @@ Then, for each new item of data, we compute the smoothed value $s_{t}$ thanks to
 
 $s_{t} = \alpha.x_{t} + (1-\alpha).s_{t-1}$
 
-### Results with $\alpha = 0.005$
-
-ADD IMAGE
-
 ## Double Exponential Smoothing
 
 ### Input
@@ -130,30 +119,42 @@ $s_{t} = \alpha.x_{t} + (1-\alpha).(s_{t-1}+b_{t-1})$
 
 $b_{t} = \beta.(s_{t}-s_{t-1}) + (1-\beta).b_{t-1}$
 
-### Results with $\alpha = 0.005$
+## Results
 
-ADD IMAGE
+#### SMA with a window of $0.5s$
+
+#### SES with $\alpha = 0.08$
+
+#### DES with $\alpha = 0.08$ and $\beta = 0.84$
+
+![Filtering results](Results.png)
 
 ## User Interface
+
 1. Include the header corresponding to the filter you want to use
+
 ```cpp
 #include "SimpleMovingAverage.hpp"
 ```
-2. Define the numerical precision you want by using ```float``` or ```double```
+
+2. Type of ```Signal``` that corresponds to the traits checked in ```TemporalSmoother``` (integers, numerical, Eigen
+   matrices...). You can add an allocator for
+   the filters such as SMA which needs one.
+
 ```cpp
-using SimpleMovingAverageType = SimpleMovingAverage<double>;
+using SimpleMovingAverageType = SimpleMovingAverage<Signal>;
 ```
+
 3. Instantiate the filter using the inputs given in the sections above:
+
 ```cpp
 SimpleMovingAverageType movingFilter{samplingFrequency, subsetDuration};
 ```
-4. When a new item of data is available, use the ```filter()``` method
+
+4. When a new item of data is available, use the ```operator+()``` to filter it.
+
 ```cpp
-const auto filteredValue{movingFilter.filter(lastSignalData)};
-```
-5. If you want to reset the accumulation of the smoothed or averaged values, use the ```clear()``` method:
-```cpp
-movingFilter.clear()
+const auto filteredValue{movingFilter + lastSignalData };
 ```
 
 These methods are common to all the filters.

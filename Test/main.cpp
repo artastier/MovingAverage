@@ -5,6 +5,7 @@
 #include "../MovingAverageFilters/SimpleExponentialSmoothing.hpp"
 #include "../MovingAverageFilters/DoubleExponentialSmoothing.hpp"
 #include "gnuplot_i.hpp"
+
 using numerical = double;
 using Dur = std::chrono::duration<numerical>;
 using NoisySinusoidType = NoisySinusoid<numerical>;
@@ -13,9 +14,9 @@ using SMAType = Smoother::SMA<numerical>;
 using SESType = Smoother::SimpleExponentialSmoothing<numerical>;
 using DESType = Smoother::DoubleExponentialSmoothing<numerical>;
 
-using SMATestType = Test::TemporalSmootherTest<SMAType,numerical>;
-using SESTestType = Test::TemporalSmootherTest<SESType,numerical>;
-using DESTestType = Test::TemporalSmootherTest<DESType,numerical>;
+using SMATestType = Test::TemporalSmootherTest<SMAType, numerical>;
+using SESTestType = Test::TemporalSmootherTest<SESType, numerical>;
+using DESTestType = Test::TemporalSmootherTest<DESType, numerical>;
 
 using Trajectory = NoisySinusoidType::Trajectory;
 
@@ -23,13 +24,13 @@ constexpr static numerical samplingFrequency{100.0};
 constexpr static Dur subsetDuration{0.50};
 constexpr static numerical signalDuration{10.0};
 constexpr static double alpha{0.08};
-constexpr static double beta{0.0084};
+constexpr static double beta{0.84};
 
 
 int main() {
     Trajectory sinusoid{(NoisySinusoidType{}).generateTrajectory(signalDuration, samplingFrequency)};
 
-    SMAType sma{samplingFrequency,subsetDuration};
+    SMAType sma{samplingFrequency, subsetDuration};
     SESType ses{alpha};
     DESType des{alpha, beta};
 
@@ -42,7 +43,9 @@ int main() {
     Trajectory desSinusoid{desTest.filterTrajectory(sinusoid)};
 
     Gnuplot figure("");
+    figure.set_xlabel("Time (s)").set_ylabel("Signal");
     figure.plot_xy<numerical>(sinusoid, "Noisy Sinusoid");
+    figure.set_style("lines lw 2");
 
     figure.plot_xy<numerical>(smaSinusoid, " Simple Moving Average");
     figure.plot_xy<numerical>(sesSinusoid, " Simple Exponential Smoothing");

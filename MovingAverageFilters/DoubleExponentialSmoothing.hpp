@@ -7,7 +7,7 @@
 #include <type_traits>
 #include <deque>
 #include <cmath>
-#include <vector>
+#include <bitset>
 #include <algorithm>
 #include "TemporalSmoother.hpp"
 namespace Smoother {
@@ -35,11 +35,11 @@ namespace Smoother {
          * @return
          */
         [[nodiscard]] Signal operator+(const Signal data) override {
-            if (initMeasureFlags[0]) {
-                initMeasureFlags[0] = false;
+            if (initMeasureFlags.none()) {
+                initMeasureFlags[0] = true;
                 smoothed = data;
-            } else if (initMeasureFlags[1]) {
-                initMeasureFlags[1] = false;
+            } else if (not initMeasureFlags.all()) {
+                initMeasureFlags[1] = true;
                 trend = data - smoothed;
                 smoothed = alpha * data + (1 - alpha) * (smoothed + trend);
             } else {
@@ -55,7 +55,7 @@ namespace Smoother {
     private:
         const double alpha{};
         const double beta{};
-        std::vector<bool> initMeasureFlags{true, true};
+        std::bitset<2> initMeasureFlags{};
         Signal smoothed{Signal{}};
         Signal trend{Signal{}};
     };
