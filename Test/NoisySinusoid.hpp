@@ -29,7 +29,7 @@ public:
 
 private:
     std::mt19937_64 generator{std::random_device{}()};
-    std::uniform_real_distribution<numerical> distribution{-0.02, 0.02};
+    std::uniform_real_distribution<numerical> distribution{-0.05, 0.05};
 
 
 };

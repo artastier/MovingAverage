@@ -9,48 +9,44 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include "TemporalSmoother.hpp"
 
+namespace Smoother {
 /**
  *
  * @tparam numerical
  */
-template<typename numerical, typename =std::enable_if_t<std::is_floating_point_v<numerical>>>
-class SimpleExponentialSmoothing {
-public:
-    /**
-     *
-     * @param aAlpha
-     */
-    SimpleExponentialSmoothing(const numerical aAlpha) : alpha(aAlpha) {
-        // TODO: Add static assert if alpha not in [0,1]
-    };
+    template<typename Signal>
+    class SimpleExponentialSmoothing : public TemporalSmoother<Signal> {
+    public:
+        /**
+         *
+         * @param aAlpha
+         */
+        SimpleExponentialSmoothing(const double aAlpha) : alpha(aAlpha) {
+            // TODO: Add static assert if alpha not in [0,1]
+        };
 
-    /**
-     *
-     * @param lastSignalData
-     * @return
-     */
-    [[nodiscard]] numerical filter(const numerical lastSignalData) {
-        if (firstMeasureFlag){
-            firstMeasureFlag = false;
-            smoothed = lastSignalData;
-        }else{
-            smoothed = alpha * lastSignalData + (1-alpha) * smoothed;
+        /**
+         *
+         * @param lastSignalData
+         * @return
+         */
+        [[nodiscard]] Signal operator+(Signal data) override {
+            if (firstMeasureFlag) {
+                firstMeasureFlag = false;
+                smoothed = data;
+            } else {
+                smoothed = alpha * data + (1 - alpha) * smoothed;
+            }
+            return smoothed;
         }
-        return smoothed;
-    }
 
-    /**
-     *
-     */
-    void clear() {
-        firstMeasureFlag = true;
-    }
+        virtual ~SimpleExponentialSmoothing() = default;
 
-    virtual ~SimpleExponentialSmoothing() = default;
-
-private:
-    const numerical alpha{};
-    bool firstMeasureFlag{true};
-    numerical smoothed{numerical{}};
-};
+    private:
+        const double alpha{};
+        bool firstMeasureFlag{true};
+        Signal smoothed{Signal{}};
+    };
+}

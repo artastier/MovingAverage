@@ -9,61 +9,54 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
-
+#include "TemporalSmoother.hpp"
+namespace Smoother {
 /**
  *
  * @tparam numerical
  */
-template<typename numerical, typename =std::enable_if_t<std::is_floating_point_v<numerical>>>
-class DoubleExponentialSmoothing {
-public:
-    /**
-     *
-     * @param aAlpha
-     * @param aBeta
-     */
-    DoubleExponentialSmoothing(const numerical aAlpha, const numerical aBeta) : alpha(aAlpha), beta(aBeta) {
-        // TODO: Add static assert if alpha not in [0,1]
-        // TODO: Add static assert if beta not in [0,1]
+    template<typename Signal>
+    class DoubleExponentialSmoothing: public TemporalSmoother<Signal> {
+    public:
+        /**
+         *
+         * @param aAlpha
+         * @param aBeta
+         */
+        DoubleExponentialSmoothing(const double aAlpha, const double aBeta) : alpha(aAlpha), beta(aBeta) {
+            // TODO: Add static assert if alpha not in [0,1]
+            // TODO: Add static assert if beta not in [0,1]
 
+        };
+
+        /**
+         *
+         * @param data
+         * @return
+         */
+        [[nodiscard]] Signal operator+(const Signal data) override {
+            if (initMeasureFlags[0]) {
+                initMeasureFlags[0] = false;
+                smoothed = data;
+            } else if (initMeasureFlags[1]) {
+                initMeasureFlags[1] = false;
+                trend = data - smoothed;
+                smoothed = alpha * data + (1 - alpha) * (smoothed + trend);
+            } else {
+                const auto previousSmoothed{smoothed};
+                smoothed = alpha * data + (1 - alpha) * (previousSmoothed + trend);
+                trend = beta * (smoothed - previousSmoothed) + (1 - beta) * trend;
+            }
+            return smoothed;
+        }
+
+        virtual ~DoubleExponentialSmoothing() = default;
+
+    private:
+        const double alpha{};
+        const double beta{};
+        std::vector<bool> initMeasureFlags{true, true};
+        Signal smoothed{Signal{}};
+        Signal trend{Signal{}};
     };
-
-    /**
-     *
-     * @param lastSignalData
-     * @return
-     */
-    [[nodiscard]] numerical filter(const numerical lastSignalData) {
-        if (initMeasureFlags[0]) {
-            initMeasureFlags[0] = false;
-            smoothed = lastSignalData;
-        } else if (initMeasureFlags[1]){
-            initMeasureFlags[1] = false;
-            trend = lastSignalData - smoothed;
-            smoothed = alpha * lastSignalData + (1- alpha) * (smoothed + trend);
-        }
-        else{
-            const auto previousSmoothed{smoothed};
-            smoothed = alpha * lastSignalData + (1 - alpha) * (previousSmoothed + trend);
-            trend = beta * (smoothed - previousSmoothed) + (1 - beta) * trend;
-        }
-        return smoothed;
-    }
-
-    /**
-     *
-     */
-    void clear() {
-        initMeasureFlags[0] = true;
-        initMeasureFlags[1] = true;
-    }
-
-    virtual ~DoubleExponentialSmoothing() = default;
-
-private:
-    const numerical alpha{};
-    const numerical beta{};
-    std::vector<bool> initMeasureFlags{true, true};
-    numerical smoothed{numerical{}};
-    numerical trend{numerical{}};
-};
+}
