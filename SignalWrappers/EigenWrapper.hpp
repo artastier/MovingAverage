@@ -16,6 +16,10 @@ public:
         return data.array();
     }
 
+    [[nodiscard]] std::tuple<std::size_t,std::size_t> shape(){
+        return data.shape();
+    }
+
     [[nodiscard]] EigenWrapper operator+(const EigenWrapper& other){
         return EigenWrapper(this->data + other.unwrap());
     }

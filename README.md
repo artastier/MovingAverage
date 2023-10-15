@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### [WIP] WARNING: Simple Moving Median not tested yet
+### [WIP] WARNING: Wrappers are not yet operational
 
 This repository regroups 4 moving average filters.
 These filters have been designed to perform an online smoothing of real-time data (Ex: Data from a sensor).
@@ -129,7 +129,7 @@ $b_{t} = \beta.(s_{t}-s_{t-1}) + (1-\beta).b_{t-1}$
 
 ![Filtering results](Results.png)
 
-## Usage
+## Usage [Working for 1D signals]/[Wrappers are coming]
 
 1. Include the header corresponding to the filter you want to use
 
