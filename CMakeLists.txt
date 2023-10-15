@@ -4,12 +4,13 @@ project(RunningMean)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE=Debug)
 
-add_executable(MovingAverage Test/main.cpp
-        MovingAverageFilters/SMA.hpp
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
+include_directories(MovingAverageFilters)
+include_directories(SignalWrappers)
+add_executable(MovingAverage MovingAverageFilters SignalWrappers Test/main.cpp
         Test/NoisySinusoid.hpp
         Test/TemporalSmootherTest.hpp
-        MovingAverageFilters/SimpleMovingMedian.hpp
-        MovingAverageFilters/SimpleExponentialSmoothing.hpp
-        MovingAverageFilters/DoubleExponentialSmoothing.hpp
-        MovingAverageFilters/TemporalSmoother.hpp
-        MovingAverageFilters/Traits.hpp)
+        )
+
+target_link_libraries(MovingAverage Eigen3::Eigen)

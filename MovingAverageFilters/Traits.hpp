@@ -100,17 +100,39 @@ namespace Smoother::traits
      * @tparam Tp The type to check for the presence of the `operator-`.
      * @tparam _ (unnamed) Used for SFINAE purposes.
      */
-    template<typename Tp, typename Up, bool = std::is_floating_point_v<Up>, typename = void>
-    struct is_floating_multiplicative_and_returns_T : public std::false_type {};
+    template<typename Tp, typename = void>
+    struct has_multiplicative_operator_and_returns_T : public std::false_type {};
 
     /**
      * @brief Specialization of the `is_integral_multiplicative_and_returns_T` meta-function.
      *        This is activated if a type `Tp` has an `operator*(Up)` that returns a type `Tp`.
      */
-    template<typename Tp, typename Up>
-    struct is_floating_multiplicative_and_returns_T<Tp, Up, true, std::enable_if_t<std::is_same_v<decltype(std::declval<Up>() * std::declval<Tp>()), Tp>>> : public std::true_type {};
+    template<typename Tp>
+    struct has_multiplicative_operator_and_returns_T<Tp, std::enable_if_t<std::is_same_v<decltype(std::declval<Tp>() * std::declval<Tp>()), Tp>>> : public std::true_type {};
 
-    template<typename Tp, typename Up>
-    constexpr static auto is_floating_multiplicative_and_returns_T_v = is_floating_multiplicative_and_returns_T<Tp, Up>::value;
+    template<typename Tp>
+    constexpr static auto has_multiplicative_operator_and_returns_T_v = has_multiplicative_operator_and_returns_T<Tp>::value;
+
+    /**
+     * @brief Meta-function to check if a type `T` has an addition operator (`operator+`)
+     *        that returns a type `T`.
+     *
+     * @tparam T The type to check for the presence of the `operator+`.
+     * @tparam _ (unnamed) Used for SFINAE purposes.
+     */
+    template<typename T, typename scalar, typename = void, typename = std::enable_if_t<std::is_arithmetic_v<scalar>>>
+    struct has_scalar_subtraction_operator_and_returns_T : public std::false_type {};
+
+    /**
+     * @brief Specialization of the `has_scalar_subtraction_operator_and_returns_T` meta-function.
+     *        This is activated if a type `T` has an `operator+` that returns a type `T`.
+     */
+    template<typename T, typename scalar>
+    struct has_scalar_subtraction_operator_and_returns_T<T, scalar,std::enable_if_t<std::is_same_v<
+            decltype(std::declval<scalar>() - std::declval<T>()),
+            T>>>: public std::true_type {};
+
+    template<typename T,typename scalar>
+    constexpr static auto has_scalar_subtraction_operator_and_returns_T_v = has_scalar_subtraction_operator_and_returns_T<T,scalar>::value;
 
 }// namespace Smoother::traits

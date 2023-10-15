@@ -9,6 +9,7 @@
 #include <cmath>
 #include <bitset>
 #include <algorithm>
+#include <cassert>
 #include "TemporalSmoother.hpp"
 namespace Smoother {
 /**
@@ -24,8 +25,8 @@ namespace Smoother {
          * @param aBeta
          */
         DoubleExponentialSmoothing(const double aAlpha, const double aBeta) : alpha(aAlpha), beta(aBeta) {
-            // TODO: Add static assert if alpha not in [0,1]
-            // TODO: Add static assert if beta not in [0,1]
+            assert(alpha>0.0 && "Alphas must be strictly positive");
+            assert(beta>0.0 && "Betas must be strictly positive");
 
         };
 

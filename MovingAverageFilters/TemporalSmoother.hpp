@@ -27,13 +27,16 @@ namespace Smoother{
                       "The Signal type must define the operator+(Signal,Signal) -> Signal");
         static_assert(traits::has_minus_operator_and_returns_T_v<Signal>,
                       "The Signal type must define the operator-(Signal,Signal) -> Signal");
+        // Double multiplication used in Simple and Double exponential smoothing
+        static_assert(traits::has_multiplicative_operator_and_returns_T_v<Signal>,
+                      "The Signal type must define the operator*(Signal, std::size_t) -> Signal");
+        static_assert(traits::has_scalar_subtraction_operator_and_returns_T_v<Signal, int>,
+                      "The Signal type must define the operator-(Signal, int) -> Signal");
         static_assert(traits::is_integral_divisible_and_returns_T_v<Signal, std::size_t>,
                       "The Signal type must define the operator/(Signal,std::size_t) -> Signal");
         static_assert(traits::is_integral_multiplicative_and_returns_T_v<Signal, std::size_t>,
                       "The Signal type must define the operator*(Signal, std::size_t) -> Signal");
-        // Double multiplication used in Simple and Double exponential smoothing
-        static_assert(traits::is_floating_multiplicative_and_returns_T_v<Signal, double>,
-                      "The Signal type must define the operator*(Signal, std::size_t) -> Signal");
+
 
     public:
         /**

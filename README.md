@@ -129,7 +129,7 @@ $b_{t} = \beta.(s_{t}-s_{t-1}) + (1-\beta).b_{t-1}$
 
 ![Filtering results](Results.png)
 
-## User Interface
+## Usage
 
 1. Include the header corresponding to the filter you want to use
 

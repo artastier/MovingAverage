@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include <type_traits>
 #include <deque>
 #include <cmath>
 #include <algorithm>
+#include <cassert>
 #include "TemporalSmoother.hpp"
 
 namespace Smoother {
@@ -23,7 +23,7 @@ namespace Smoother {
          * @param aAlpha
          */
         explicit SimpleExponentialSmoothing(const double aAlpha) : alpha(aAlpha) {
-            // TODO: Add static assert if alpha not in [0,1]
+            assert(alpha>0.0 && "Alphas must be strictly positive");
         };
 
         /**
